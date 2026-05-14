@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Record } from "@/types/record";
 
 export default function Home() {
@@ -9,6 +9,18 @@ export default function Home() {
  //   { id: "1", title: "ランチ", amount: 1200, date: "2026-05-13", category: "食費" },
    // { id: "2", title: "コーヒー", amount: 500, date: "2026-05-14", category: "食費" },
   ]);
+  //画面を開いた時に、保存されたデータを読み込む
+  useEffect(() => {
+    const saved = localStorage.getItem("my-money-app-data");
+    if (saved) {
+      setRecords(JSON.parse(saved));
+    }
+  },[]);
+
+  //records(データ)が更新されるたびに、自動で保存する
+  useEffect(() => {
+    localStorage.setItem("my-money-app-data", JSON.stringify(records));
+  },[records]);
 
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState(0);
