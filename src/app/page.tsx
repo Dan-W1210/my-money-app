@@ -6,12 +6,13 @@ import { Record } from "@/types/record";
 export default function Home() {
   //１.データの状態管理（最初は空、またはサンプルデータ）
   const [records, setRecords] = useState<Record[]>([
-    { id: "1", title: "ランチ", amount: 1200, date: "2026-05-13" },
-    { id: "2", title: "コーヒー", amount: 500, date: "2026-05-14" },
+ //   { id: "1", title: "ランチ", amount: 1200, date: "2026-05-13", category: "食費" },
+   // { id: "2", title: "コーヒー", amount: 500, date: "2026-05-14", category: "食費" },
   ]);
 
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState(0);
+  const [category, setCategory] = useState("食費");
 
   //新しい記録を追加する関数
   const addRecord = () => {
@@ -22,6 +23,7 @@ export default function Home() {
       title: title,
       amount: amount,
       date: new Date().toLocaleDateString(),//今日の日付
+      category: category,
     };
 
     setRecords([newRecord, ...records]);// リストの先頭に追加
@@ -70,6 +72,19 @@ export default function Home() {
               onChange={(e) => setAmount(Number(e.target.value))} 
               className="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
             />
+            {/*カテゴリー選択*/}
+            <select 
+              value={category} 
+              onChange={(e) => setCategory(e.target.value)} 
+              className="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white"
+            >
+              <option value="食費（外食）">食費(外食)</option>
+              <option value="食費(材料費)">食費(材料費)</option>
+              <option value="日用品">日用品</option>
+              <option value="交際費">娯楽</option>
+              <option value="娯楽">娯楽</option>
+              <option value="その他">その他</option>
+            </select>
             <button 
               onClick={addRecord} 
               className="bg-amber-500 text-white font-bold py-3 rounded-lg hover:bg-amber-600 transition-colors"
@@ -86,6 +101,13 @@ export default function Home() {
               <div>
                 <p className="font-bold">{record.title}</p>
                 <p className="text-xs text-gray-400">{record.date}</p>
+                  <div className="flex items-center gap-2">
+                    {/*カテゴリバッジ */}
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold">
+                      {record.category}
+                    </span>
+                    <p className="font-bold">{record.title}</p>
+                  </div>
 
                 {/*削除機能*/}
                 <button 
