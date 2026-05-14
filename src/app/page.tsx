@@ -29,6 +29,12 @@ export default function Home() {
     setAmount(0);//金額を０に戻す
   };
 
+  const deleteRecord = (id:string) => {
+      //指定されたIDと「一致しない」ものだけを抽出して新しいリストを作成
+      const updatedRecords = records.filter((record) => record.id !== id);
+      setRecords(updatedRecords);
+    }
+
   //2.合計金額の計算
   const totalAmount = records.reduce((sum, record) => sum + record.amount, 0);
 
@@ -80,6 +86,14 @@ export default function Home() {
               <div>
                 <p className="font-bold">{record.title}</p>
                 <p className="text-xs text-gray-400">{record.date}</p>
+
+                {/*削除機能*/}
+                <button 
+                  onClick={() => deleteRecord(record.id)}
+                  className="text-red-400 hover:text-red-600 text-sm transition-colors"
+                >
+                  削除
+                </button>
               </div>
               <p className="font-mono font-bold text-lg">¥{record.amount.toLocaleString()}</p>
             </div>
